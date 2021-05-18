@@ -7,6 +7,7 @@
 #include <time.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <mmsystem.h>
 #include <Windows.h>
 
 // newSpeed - Randomize a new speed vector.
@@ -23,7 +24,6 @@ void newSpeed(float dest[3]) {
     /*
      * Normalizing the speed vectors gives a "fireball" effect
      */
-
     if (wantNormalize) {
         len = sqrt(x * x + y * y + z * z);
 
@@ -77,8 +77,8 @@ void newExplosion(void) {
         newSpeed(debris[i].speed);
         newSpeed(debris[i].orientationSpeed);
     }
-
-    fuel = 125;
+    PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC);
+    fuel = 135;
 }
 
 //display - Draw the scene.
@@ -159,9 +159,7 @@ void display(void) {
 }
 
 // Keyboard callback.
-void keyboard(unsigned char key,
-    int x,
-    int y) {
+void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         newExplosion();
@@ -224,8 +222,7 @@ void idle(void) {
 }
  
 // reshape - Window reshape callback.
-void reshape(int w,
-    int h) {
+void reshape(int w, int h) {
     glViewport(0.0, 0.0, (GLfloat)w, (GLfloat)h);
 
     glMatrixMode(GL_PROJECTION);
@@ -251,6 +248,5 @@ void menuSelect(int value) {
         break;
     }
 }
-
 
 #endif // !FUNCTIONS_H
