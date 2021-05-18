@@ -78,7 +78,7 @@ void newExplosion(void) {
         newSpeed(debris[i].orientationSpeed);
     }
     PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC);
-    fuel = 135;
+    fuel = 100;
 }
 
 //display - Draw the scene.
