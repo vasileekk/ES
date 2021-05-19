@@ -78,7 +78,8 @@ void newExplosion(void) {
         newSpeed(debris[i].orientationSpeed);
     }
     PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
-    fuel = 160;
+
+    fuel = 200;
 }
 
 //display - Draw the scene.
@@ -149,14 +150,8 @@ void display(void) {
             glRotatef(debris[i].orientation[1], 0.0, 1.0, 0.0);
             glRotatef(debris[i].orientation[2], 0.0, 0.0, 1.0);
 
-            glScalef(debris[i].scale[0],
-                debris[i].scale[1],
-                debris[i].scale[2]);
+            glutSolidCube(0.05);
 
-            glBegin(GL_TRIANGLES);
-            glVertex3f(0.0, 0.5, 0.0);
-            glVertex3f(-0.25, 0.0, 0.0);
-            glVertex3f(0.25, 0.0, 0.0);
             glEnd();
 
             glPopMatrix();
@@ -231,7 +226,16 @@ void idle(void) {
                     particles[i].position[0] += particles[i].speed[0] * 0.2;
                     particles[i].position[1] += particles[i].speed[1] * 0.2;
                     particles[i].position[2] += particles[i].speed[2] * 0.2;
+
+                    
                 }
+                else
+                {
+                    particles[i].color[0] = 1.0;
+                    particles[i].color[1] = 1.0;
+                    particles[i].color[2] = 1.0;
+                }
+
                 particles[i].color[0] -= 1.0 / 500.0;
                 if (particles[i].color[0] < 0.0) {
                     particles[i].color[0] = 0.0;
