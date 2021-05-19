@@ -12,8 +12,8 @@ const unsigned int SCR_HEIGHT = 1000;
 
 
 /* Globals */
-#define NUM_PARTICLES 20000 /* Number of particles */
-#define NUM_DEBRIS 80 /* Number of debris */
+#define NUM_PARTICLES 5000 /* Number of particles */
+#define NUM_DEBRIS 70 /* Number of debris */
 
 particleData particles[NUM_PARTICLES];
 debrisData debris[NUM_DEBRIS];

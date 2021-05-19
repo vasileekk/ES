@@ -99,8 +99,7 @@ void display(void) {
         0.0, 1.0, 0.0
     );
     /* If no explosion, draw cube */
-    glNormal3f(0.0, 0.0, 1.0);
-
+    
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_QUADS); // полигон с коондинатами
@@ -119,20 +118,17 @@ void display(void) {
     }
     
     if (fuel > 0) {
-        glPushMatrix();
 
+        glPushMatrix();
         glDisable(GL_LIGHTING);
         glDisable(GL_DEPTH_TEST);
 
         glBegin(GL_POINTS);
-
         for (i = 0; i < NUM_PARTICLES; i++) {
             glColor3fv(particles[i].color);
             glVertex3fv(particles[i].position);
         }
-
         glEnd();
-
         glPopMatrix();
 
         glEnable(GL_LIGHTING);
@@ -172,15 +168,15 @@ void display(void) {
 
 // Keyboard callback.
 void cameraControl(unsigned char key) {
-    float fraction = 0.1f;
+    float fraction = 0.2f;
     switch (key) {
     case 'a':
-        angle -= 0.01f;
+        angle -= 0.05f;
         oX = sin(angle);
         oZ = -cos(angle);
         break;
     case 'd':
-        angle += 0.01f;
+        angle += 0.05f;
         oX = sin(angle);
         oZ = -cos(angle);
         break;
@@ -202,12 +198,6 @@ void keyboard(unsigned char key, int x, int y) {
         newExplosion();
         break;
 
-    case 'r':
-        if (rotation_speed == 0.0)rotation_speed = 2.0;
-        else rotation_speed = 0.0;
-
-        break;
-
     case 'p':
         wantPause = 1 - wantPause;
         break;
@@ -216,10 +206,7 @@ void keyboard(unsigned char key, int x, int y) {
             exit(0);
             break;
     }
-
 }
-
-
 
 bool particleCollision(particleData* particle) {
     if (particle->position[1] < -2)return 0;
@@ -297,16 +284,6 @@ void menuSelect(int value) {
     switch (value) {
     case PAUSE:
         wantPause = 1 - wantPause;
-        break;
-
-    case NORMALIZE_SPEED:
-        wantNormalize = 1 - wantNormalize;
-        break;
-
-    case TOGGLE_ROTATION:
-        if (rotation_speed == 0.0)rotation_speed = 2.0;
-        else rotation_speed = 0.0;
-
         break;
 
     case QUIT:

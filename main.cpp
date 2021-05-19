@@ -11,8 +11,7 @@
 #include "Globals.h"
 #include "Functions.h"
 
-int main(int argc,
-    char* argv[]) {
+int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGB);
 
@@ -44,8 +43,6 @@ int main(int argc,
 
     glutCreateMenu(menuSelect);
     glutAddMenuEntry("Pause", PAUSE);
-    glutAddMenuEntry("Toggle normalized speed vectors ", NORMALIZE_SPEED);
-    glutAddMenuEntry("Toggle camera rotation", TOGGLE_ROTATION);
     glutAddMenuEntry("Quit", QUIT);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutMainLoop();
