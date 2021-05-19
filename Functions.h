@@ -99,7 +99,10 @@ void display(void) {
         0.0, 1.0, 0.0
     );
     /* If no explosion, draw cube */
+    glNormal3f(0.0, 0.0, 1.0);
 
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
     glBegin(GL_QUADS); // полигон с коондинатами
     glVertex3f(-100.0f, -2.0f, -100.0f);
     glVertex3f(-100.0f, -2.0f, 100.0f);
@@ -114,7 +117,7 @@ void display(void) {
         glutSolidCube(1.0);
 
     }
-
+    
     if (fuel > 0) {
         glPushMatrix();
 
@@ -133,11 +136,8 @@ void display(void) {
         glPopMatrix();
 
         glEnable(GL_LIGHTING);
-        glEnable
-
-        (GL_LIGHT0);
+        glEnable(GL_LIGHT0);
         glEnable(GL_DEPTH_TEST);
-
         glNormal3f(0.0, 0.0, 1.0);
 
         for (i = 0; i < NUM_DEBRIS; i++) {
