@@ -63,9 +63,9 @@ void newExplosion(void) {
         debris[i].orientation[1] = 0.0;
         debris[i].orientation[2] = 0.0;
 
-        debris[i].color[0] = 0.7;
-        debris[i].color[1] = 0.7;
-        debris[i].color[2] = 0.7;
+        debris[i].color[0] = 0.4;
+        debris[i].color[1] = 0.4;
+        debris[i].color[2] = 0.4;
 
         debris[i].scale[0] = (2.0 *
             ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
@@ -78,7 +78,7 @@ void newExplosion(void) {
         newSpeed(debris[i].orientationSpeed);
     }
     PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
-    fuel = 100;
+    fuel = 155;
 }
 
 //display - Draw the scene.
@@ -165,14 +165,33 @@ void keyboard(unsigned char key, int x, int y) {
         newExplosion();
         break;
 
-    case 27:
-        exit(0);
+    case 'r':
+        if (rotation_speed == 0.0)rotation_speed = 2.0;
+        else rotation_speed = 0.0;
+
         break;
 
     case 'p':
         wantPause = 1 - wantPause;
         break;
+    
+    case 27:
+            exit(0);
+            break;
     }
+
+}
+
+bool particleCollision(particleData* particle) {
+    if (particle->position[1] < -2)return 0;
+
+    return 1;
+}
+
+bool debrisCollision(debrisData* debree) {
+    if (debree->position[1] < -2)return 0;
+
+    return 1;
 }
 
 //idle Update - animation variables.
@@ -182,10 +201,11 @@ void idle(void) {
     if (!wantPause) {
         if (fuel > 0) {
             for (i = 0; i < NUM_PARTICLES; i++) {
-                particles[i].position[0] += particles[i].speed[0] * 0.2;
-                particles[i].position[1] += particles[i].speed[1] * 0.2;
-                particles[i].position[2] += particles[i].speed[2] * 0.2;
-
+                if (particleCollision(&particles[i])) {
+                    particles[i].position[0] += particles[i].speed[0] * 0.2;
+                    particles[i].position[1] += particles[i].speed[1] * 0.2;
+                    particles[i].position[2] += particles[i].speed[2] * 0.2;
+                }
                 particles[i].color[0] -= 1.0 / 500.0;
                 if (particles[i].color[0] < 0.0) {
                     particles[i].color[0] = 0.0;
@@ -203,21 +223,22 @@ void idle(void) {
             }
 
             for (i = 0; i < NUM_DEBRIS; i++) {
-                debris[i].position[0] += debris[i].speed[0] * 0.1;
-                debris[i].position[1] += debris[i].speed[1] * 0.1;
-                debris[i].position[2] += debris[i].speed[2] * 0.1;
+                if (debrisCollision(&debris[i])) {
+                    debris[i].position[0] += debris[i].speed[0] * 0.1;
+                    debris[i].position[1] += debris[i].speed[1] * 0.1;
+                    debris[i].position[2] += debris[i].speed[2] * 0.1;
+                    debris[i].speed[1] -= 0.001;
 
-                debris[i].orientation[0] += debris[i].orientationSpeed[0] * 10;
-                debris[i].orientation[1] += debris[i].orientationSpeed[1] * 10;
-                debris[i].orientation[2] += debris[i].orientationSpeed[2] * 10;
+                    debris[i].orientation[0] += debris[i].orientationSpeed[0] * 10;
+                    debris[i].orientation[1] += debris[i].orientationSpeed[1] * 10;
+                    debris[i].orientation[2] += debris[i].orientationSpeed[2] * 10;
+                }
             }
 
             --fuel;
         }
-
-        angle += rotation_speed; /*Always continue to rotate the camera*/
     }
-
+    angle += rotation_speed; /*Always continue to rotate the camera*/
     glutPostRedisplay();
 }
  
@@ -244,7 +265,7 @@ void menuSelect(int value) {
         break;
 
     case TOGGLE_ROTATION:
-        if (rotation_speed == 0.0)rotation_speed = 3.0;
+        if (rotation_speed == 0.0)rotation_speed = 2.0;
         else rotation_speed = 0.0;
 
         break;
