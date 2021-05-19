@@ -78,7 +78,7 @@ void newExplosion(void) {
         newSpeed(debris[i].orientationSpeed);
     }
     PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
-    fuel = 155;
+    fuel = 160;
 }
 
 //display - Draw the scene.
@@ -93,14 +93,26 @@ void display(void) {
 
     glTranslatef(0.0, 0.0, -10.0);
     glRotatef(angle, 0.0, 1.0, 0.0);
-
+    gluLookAt(
+        camX, 0.0, camZ,
+        camX+oX, 0.0, camZ+oZ,
+        0.0, 1.0, 0.0
+    );
     /* If no explosion, draw cube */
+
+    glBegin(GL_QUADS); // полигон с коондинатами
+    glVertex3f(-100.0f, -2.0f, -100.0f);
+    glVertex3f(-100.0f, -2.0f, 100.0f);
+    glVertex3f(100.0f, -2.0f, 100.0f);
+    glVertex3f(100.0f, -2.0f, -100.0f);
+    glEnd();
 
     if (fuel == 0) {
         glEnable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
         glEnable(GL_DEPTH_TEST);
         glutSolidCube(1.0);
+
     }
 
     if (fuel > 0) {
@@ -159,7 +171,32 @@ void display(void) {
 }
 
 // Keyboard callback.
+void cameraControl(unsigned char key) {
+    float fraction = 0.1f;
+    switch (key) {
+    case 'a':
+        angle -= 0.01f;
+        oX = sin(angle);
+        oZ = -cos(angle);
+        break;
+    case 'd':
+        angle += 0.01f;
+        oX = sin(angle);
+        oZ = -cos(angle);
+        break;
+    case 'w':
+        camX += oX * fraction;
+        camZ += oZ * fraction;
+        break;
+    case 's':
+        camX -= oX * fraction;
+        camZ -= oZ * fraction;
+        break;
+    }
+}
+
 void keyboard(unsigned char key, int x, int y) {
+    cameraControl(key);
     switch (key) {
     case ' ':
         newExplosion();
@@ -181,6 +218,8 @@ void keyboard(unsigned char key, int x, int y) {
     }
 
 }
+
+
 
 bool particleCollision(particleData* particle) {
     if (particle->position[1] < -2)return 0;
@@ -238,7 +277,7 @@ void idle(void) {
             --fuel;
         }
     }
-    angle += rotation_speed; /*Always continue to rotate the camera*/
+    //angle += rotation_speed; /*Always continue to rotate the camera*/
     glutPostRedisplay();
 }
  

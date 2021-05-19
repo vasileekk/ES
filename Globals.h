@@ -23,7 +23,9 @@ int fuel = 0; /* "fuel" of the explosion */
 /*Camera variables*/
 
 float camX = 0.0;
-float camZ = 0.0;
+float camZ = 2.0;
+float oX = 0.0;
+float oZ = -1.0;
 
 float angle = 0.0; /* camera rotation angle */
 float rotation_speed = 2.0; /* camera rotation speed */
