@@ -45,6 +45,7 @@ int main(int argc,
     glutCreateMenu(menuSelect);
     glutAddMenuEntry("Pause", PAUSE);
     glutAddMenuEntry("Toggle normalized speed vectors ", NORMALIZE_SPEED);
+    glutAddMenuEntry("Toggle camera rotation", TOGGLE_ROTATION);
     glutAddMenuEntry("Quit", QUIT);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutMainLoop();

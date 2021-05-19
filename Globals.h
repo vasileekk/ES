@@ -7,7 +7,8 @@ const unsigned int SCR_HEIGHT = 1000;
 
 #define PAUSE 0
 #define NORMALIZE_SPEED 1
-#define QUIT 2
+#define TOGGLE_ROTATION 2
+#define QUIT 3
 
 #define NUM_PARTICLES 1000 /* Number of particles */
 #define NUM_DEBRIS 70 /* Number of debris */
@@ -19,3 +20,4 @@ debrisData debris[NUM_DEBRIS];
 int fuel = 0; /* "fuel" of the explosion */
 
 float angle = 0.0; /* camera rotation angle */
+float rotation_speed = 3.0;

@@ -77,7 +77,7 @@ void newExplosion(void) {
         newSpeed(debris[i].speed);
         newSpeed(debris[i].orientationSpeed);
     }
-    PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC);
+    PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
     fuel = 100;
 }
 
@@ -215,7 +215,7 @@ void idle(void) {
             --fuel;
         }
 
-        angle += 0.3; /* Always continue to rotate the camera */
+        angle += rotation_speed; /*Always continue to rotate the camera*/
     }
 
     glutPostRedisplay();
@@ -241,6 +241,12 @@ void menuSelect(int value) {
 
     case NORMALIZE_SPEED:
         wantNormalize = 1 - wantNormalize;
+        break;
+
+    case TOGGLE_ROTATION:
+        if (rotation_speed == 0.0)rotation_speed = 3.0;
+        else rotation_speed = 0.0;
+
         break;
 
     case QUIT:
