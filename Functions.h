@@ -21,19 +21,14 @@ void newSpeed(float dest[3]) {
     y = (2.0 * ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
     z = (2.0 * ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
 
-    /*
-     * Normalizing the speed vectors gives a "fireball" effect
-     */
-    if (wantNormalize) {
-        len = sqrt(x * x + y * y + z * z);
-
-        if (len) {
-            x = x / len;
-            y = y / len;
-            z = z / len;
-        }
+    //Normalizing the speed vectors gives a "fireball" effect
+    len = sqrt(x * x + y * y + z * z);
+    if (len) {
+        x = x / len;
+        y = y / len;
+        z = z / len;
     }
-
+   
     dest[0] = x;
     dest[1] = y;
     dest[2] = z;
@@ -66,20 +61,13 @@ void newExplosion(void) {
         debris[i].color[0] = 0.4;
         debris[i].color[1] = 0.4;
         debris[i].color[2] = 0.4;
-
-        debris[i].scale[0] = (2.0 *
-            ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
-        debris[i].scale[1] = (2.0 *
-            ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
-        debris[i].scale[2] = (2.0 *
-            ((GLfloat)rand()) / ((GLfloat)RAND_MAX)) - 1.0;
-
+         
         newSpeed(debris[i].speed);
         newSpeed(debris[i].orientationSpeed);
     }
     PlaySound(L"Boom1.wav", NULL, SND_FILENAME | SND_ASYNC | SND_NODEFAULT);
 
-    fuel = 200;
+    fuel = 600;
 }
 
 //display - Draw the scene.
@@ -87,11 +75,9 @@ void display(void) {
     int i;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glLoadIdentity();
 
     /* Place the camera */
-
     glTranslatef(0.0, 0.0, -10.0);
     glRotatef(angle, 0.0, 1.0, 0.0);
     gluLookAt(
@@ -99,27 +85,25 @@ void display(void) {
         camX+oX, 0.0, camZ+oZ,
         0.0, 1.0, 0.0
     );
-    /* If no explosion, draw cube */
-    
+
     glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-    glBegin(GL_QUADS); // полигон с коондинатами
+    glBegin(GL_QUADS); // flatness
+    glColor3f(0.5, 0.5, 0.5);
     glVertex3f(-100.0f, -2.0f, -100.0f);
     glVertex3f(-100.0f, -2.0f, 100.0f);
     glVertex3f(100.0f, -2.0f, 100.0f);
     glVertex3f(100.0f, -2.0f, -100.0f);
     glEnd();
 
+    /* If no explosion, draw cube */
     if (fuel == 0) {
         glEnable(GL_LIGHTING);
         glDisable(GL_LIGHT0);
         glEnable(GL_DEPTH_TEST);
         glutSolidCube(1.0);
-
     }
-    
-    if (fuel > 0) {
 
+    if (fuel > 0) {
         glPushMatrix();
         glDisable(GL_LIGHTING);
         glDisable(GL_DEPTH_TEST);
@@ -136,10 +120,9 @@ void display(void) {
         glEnable(GL_LIGHT0);
         glEnable(GL_DEPTH_TEST);
         glNormal3f(0.0, 0.0, 1.0);
-
+        
         for (i = 0; i < NUM_DEBRIS; i++) {
             glColor3fv(debris[i].color);
-
             glPushMatrix();
 
             glTranslatef(debris[i].position[0],
@@ -151,9 +134,6 @@ void display(void) {
             glRotatef(debris[i].orientation[2], 0.0, 0.0, 1.0);
 
             glutSolidCube(0.05);
-
-            glEnd();
-
             glPopMatrix();
         }
     }
@@ -163,7 +143,7 @@ void display(void) {
 
 // Keyboard callback.
 void cameraControl(unsigned char key) {
-    float fraction = 0.2f;
+    float fraction = 0.25f;
     switch (key) {
     case 'a':
         angle -= 0.05f;
@@ -257,7 +237,7 @@ void idle(void) {
                     debris[i].position[0] += debris[i].speed[0] * 0.1;
                     debris[i].position[1] += debris[i].speed[1] * 0.1;
                     debris[i].position[2] += debris[i].speed[2] * 0.1;
-                    debris[i].speed[1] -= 0.001;
+                    debris[i].speed[1] -= 0.002;
 
                     debris[i].orientation[0] += debris[i].orientationSpeed[0] * 10;
                     debris[i].orientation[1] += debris[i].orientationSpeed[1] * 10;

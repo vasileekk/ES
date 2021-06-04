@@ -71,5 +71,4 @@ GLfloat materialSpec[4] = {
 };
 GLfloat materialShininess = 27.8;
 
-int wantNormalize = 1; /* Speed vector normalization flag */
 int wantPause = 0; /* Pause flag */
